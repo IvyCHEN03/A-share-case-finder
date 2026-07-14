@@ -26,6 +26,33 @@
 | C | 形似而实质不符 | 作为排除案例 |
 | D | 仅有二手线索 | 仅用于继续检索 |
 
+## 平台兼容
+
+本仓库采用“一套核心方法论 + 平台适配层”：
+
+| 平台 | 使用入口 | 说明 |
+|---|---|---|
+| Claude | 根目录 `SKILL.md` | 将完整 skill 文件夹上传或放入 Claude Skills 目录 |
+| Codex | 根目录 `SKILL.md` + `agents/openai.yaml` | 支持自然语言或 `$a-share-corner-case-finder` 调用 |
+| ChatGPT | `adapters/chatgpt/` | Instructions 与 Knowledge 分开配置 |
+
+运行以下命令可以生成两个独立安装包：
+
+```bash
+bash scripts/build-packages.sh
+```
+
+输出：
+
+```text
+dist/a-share-corner-case-finder-claude.zip
+dist/a-share-corner-case-finder-chatgpt.zip
+```
+
+## 在 Claude 中安装
+
+运行打包脚本后，上传 `dist/a-share-corner-case-finder-claude.zip`；也可以直接使用包含 `SKILL.md`、`references/` 和 `assets/` 的完整仓库目录。
+
 ## 在 Codex 中安装
 
 将本仓库克隆或下载后，把整个文件夹放入：
@@ -46,12 +73,22 @@
 
 ChatGPT 不能直接安装 Codex Skill ZIP，但可以将同一内容配置成自定义 GPT：
 
-1. 将 `SKILL.md` 去掉 YAML frontmatter 后放入 GPT **Instructions**；
-2. 将 `references/*.md` 和 `assets/*.md` 上传为 **Knowledge**；
+1. 将 `adapters/chatgpt/instructions.md` 放入 GPT **Instructions**；
+2. 按 `adapters/chatgpt/config.md` 上传六个 Knowledge 文件；
 3. 开启 **Web Search** 与 **Code Interpreter & Data Analysis**；
 4. 在 Instructions 中保留“一手文件、核实层级、不得虚构页码”等约束。
 
-案例库在自定义 GPT 中是静态知识文件；新增案例后需要重新上传，或者通过外部数据库和 GPT Action 实现持续读写。
+也可以运行打包脚本，然后按照 `dist/a-share-corner-case-finder-chatgpt.zip` 内的 `CONFIG.md` 配置。案例库在自定义 GPT 中是静态知识文件；新增案例后需要重新上传，或者通过外部数据库和 GPT Action 实现持续读写。
+
+## Demo
+
+完整演示见 [`demo/demo.md`](demo/demo.md)。它展示：
+
+- 如何先拆分监管规则和权益类型；
+- 如何确认严格/宽口径；
+- 如何输出 A/B/C/D 分层；
+- 如何在无法读取一手条款时保持 B 类；
+- 如何避免将虚构 Demo 当成真实案例。
 
 ## 推荐调用方式
 
@@ -80,9 +117,17 @@ a-share-corner-case-finder/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
+├── adapters/
+│   └── chatgpt/
+│       ├── instructions.md
+│       └── config.md
 ├── assets/
 │   ├── case-request-template.md
 │   └── case-output-template.md
+├── demo/
+│   └── demo.md
+├── scripts/
+│   └── build-packages.sh
 └── references/
     ├── source-priority.md
     ├── entry-points.md
@@ -92,7 +137,10 @@ a-share-corner-case-finder/
 
 - `SKILL.md`：核心工作流、触发条件和质量控制；
 - `agents/openai.yaml`：Codex 界面展示及默认调用提示；
+- `adapters/chatgpt/`：ChatGPT 自定义 GPT 的 Instructions 和配置清单；
 - `assets/`：检索口径单与最终 Memo 模板；
+- `demo/`：端到端调用演示；
+- `scripts/build-packages.sh`：生成 Claude 和 ChatGPT 独立安装包；
 - `references/`：信源优先级、官方入口、案例概念树和案例库。
 
 ## 案例库
