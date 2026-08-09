@@ -1,0 +1,7 @@
+interface:
+  display_name: "A股边界案例检索"
+  short_description: "检索并核验A股IPO、再融资及并购重组中的监管边界案例"
+  default_prompt: "使用 $a-share-corner-case-finder，先核实现行监管规则，再以一手文件检索并分层核验相关A股案例。"
+
+policy:
+  allow_implicit_invocation: true

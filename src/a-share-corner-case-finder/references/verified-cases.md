@@ -4,7 +4,7 @@
 
 ## 使用方式
 
-每完成一类检索，把经过 Step 5 核验的案例按下方结构补入。字段设计与 `templates/case_output_template.md` 一致。
+每完成一类检索，把经过 Step 5 核验的案例按下方结构补入。字段设计与 `references/case-output-template.md` 一致。
 
 ## 条目结构
 
