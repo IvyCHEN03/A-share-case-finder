@@ -1,0 +1,10 @@
+{"id":"T001","prompt":"$a-share-corner-case-finder 帮我找无实际控制人IPO公司中，外部投资人与员工持股平台直接签署一致行动协议并成功上市的案例。","expected_trigger":true,"reason":"显式调用 Skill，且任务属于 A 股 IPO 边界案例检索。"}
+{"id":"T002","prompt":"有没有上市前外部投资人和员工持股平台签过一致行动协议，最后还成功上市的先例？最好是无实控人结构。","expected_trigger":true,"reason":"虽未写 Skill 名称，但包含有没有先例、上市前安排、无实控人等核心触发语义。"}
+{"id":"T003","prompt":"请核验募投项目终止后，剩余募集资金永久补流在半年报和专项报告中通常如何披露，并给我A股案例。","expected_trigger":true,"reason":"属于募集资金披露和监管案例核验。"}
+{"id":"T004","prompt":"这篇律所文章说某公司以无实际控制人结构过会，请回到交易所文件确认是否准确。","expected_trigger":true,"reason":"要求用一手文件核验二手案例。"}
+{"id":"T005","prompt":"帮我介绍一下微电生理的主营业务、产品和近三年收入。","expected_trigger":false,"reason":"一般公司介绍，不涉及边界案例或监管口径。"}
+{"id":"T006","prompt":"预测一下微电生理未来三个月的股价，并告诉我是否值得买。","expected_trigger":false,"reason":"荐股和股价预测明确不在 Skill 范围。"}
+{"id":"T007","prompt":"帮我找一家在纳斯达克上市的医疗器械公司。","expected_trigger":false,"reason":"不属于 A 股案例研究。"}
+{"id":"T008","prompt":"把这段中文改得更正式：公司目前没有实际控制人。","expected_trigger":false,"reason":"只是语言润色，没有检索和核验需求。"}
+{"id":"T009","prompt":"赛微微电子和埃泰克是否符合外部投资人向员工平台委托表决权这一口径？请给排除理由。","expected_trigger":true,"reason":"需要按必要条件核验并分类 A 股 IPO 候选。"}
+{"id":"T010","prompt":"请解释一致行动协议和表决权委托协议在公司法上的一般区别，不需要找上市案例。","expected_trigger":false,"reason":"一般法律概念解释，用户明确不需要 A 股案例检索。"}
