@@ -25,16 +25,41 @@
 
 典型触发问题包括“找案例”“有没有先例”“审核口径是什么”“是否符合发行条件”和“有没有类似 corner case”。
 
+不适用于实时行情、常规财务数据查询、个股投资建议、纯文字润色，或只需摘要用户已提供文件而不需要检索先例的任务。
+
 ## 核心工作流
+
+新手默认使用四步快速模式：复述问题并区分“必须/最好” → 找3—5个候选 → 深读最可能命中的1—2个 → 输出结论、案例、排除理由和来源。只有完整底稿、候选很多或口径变化时，才展开下列专业流程：
 
 1. **定位现行监管规则**：核对规则名称、条款、版本、生效状态，并判断规则性质。
 2. **定义检索口径**：明确严格口径、宽口径、板块、时间范围、项目状态、阈值和排除项。
+   对“必须/最好/可参考/含义未明”分别标注hard、preferred、fallback和unresolved；只有真正影响严格结论且无法并行覆盖的歧义才阻塞追问。
 3. **建立概念树**：形成对象词、事项词、时点词、同义词和反向排除词。
 4. **高召回获取候选**：优先扫描标准化披露字段，并用多轮检索和知名案例反查覆盖度。
 5. **锁定一手文件**：调取交易所、证监会、巨潮等原始披露，核对文件版本和问询轮次。
 6. **读取关键条款**：记录文件名、披露日期、章节和页码，区分“文件已定位”和“条款原文已读取”。
 7. **必要条件测试与动态分层**：按当前问题口径逐项测试，给出 A/B/C/D 匹配等级和独立的 E1—E4 证据状态；条件变化后重新评级并说明升降级原因。
 8. **输出研究 Memo**：结论先行，附监管依据、严格案例、近似案例、案例卡片和置信度。
+
+## 可执行能力
+
+Skill 内置了无第三方依赖的 `scripts/case_pipeline.py`，将重复且容易漂移的环节程序化：
+
+- `fetch`：网络超时重试、备用官方 URL、PDF 载荷校验；
+- `inspect`：检查 PDF 文字层，识别需要 OCR/页面渲染的情形；
+- `classify`：按 hard/preferred/fallback 和证据状态生成 A/B/C/D、E1—E4；
+- 日期门禁：拒绝未来检索截止日和晚于截止日的事件；假设场景必须显式标记；
+- `selftest`：一条命令验证安装包的程序能力。
+
+```bash
+python3 scripts/case_pipeline.py selftest
+python3 scripts/case_pipeline.py schema > /tmp/cases.json
+python3 scripts/case_pipeline.py classify /tmp/cases.json
+```
+
+`selftest`只需在安装、升级或发布前运行；普通检索直接使用快速模式。
+
+脚本不会替代对主体性质、法律关系和监管规则的专业判断。
 
 ## A/B/C/D 动态匹配等级
 
@@ -103,9 +128,12 @@ unzip a-share-corner-case-finder.zip -d ~/.codex/skills
 
 ```bash
 python3 evals/validate_evals.py
+python3 evals/test_case_pipeline.py
 ```
 
 ChatGPT通用检索、Codex不加载Skill与Codex加载Skill的三组量化方法见 [`evals/comparison-protocol.md`](evals/comparison-protocol.md)。现有微电生理对话的回溯分析见 [`evals/results/retrospective-microport.md`](evals/results/retrospective-microport.md)；单案例只用于形成假设，不作为正式效果数据。
+
+募投实施主体题的两份回答对比、严格案例误分原因和修复要求见 [`evals/results/comparison-ipo-implementation-subjects.md`](evals/results/comparison-ipo-implementation-subjects.md)。
 
 同为GPT-5.6-sol时基于今天任务链形成的纵向测试见 [`evals/pilot-2026-08-13.md`](evals/pilot-2026-08-13.md)。它用于开发回归和面试Demo；正式效果仍需未公开holdout题。
 
@@ -127,9 +155,15 @@ A-share-case-finder/
 │   ├── pilot-2026-08-13.md
 │   ├── interview-scorecard.md
 │   ├── validate_evals.py
+│   ├── test_case_pipeline.py
 │   ├── results/
+│   │   ├── comparison-cicc-semiconductor.md
+│   │   ├── comparison-ipo-implementation-subjects.md
 │   │   └── retrospective-microport.md
 │   └── gold/
+│       ├── cicc-semiconductor-latest.md
+│       ├── clarification-policy.md
+│       ├── ipo-fundraising-implementation-subjects.md
 │       ├── microport-ep.md
 │       └── scope-evolution.md
 ├── src/
@@ -137,12 +171,17 @@ A-share-case-finder/
 │       ├── SKILL.md
 │       ├── agents/
 │       │   └── openai.yaml
+│       ├── scripts/
+│       │   └── case_pipeline.py
 │       └── references/
 │           ├── case-output-template.md
 │           ├── case-request-template.md
+│           ├── clarification-policy.md
 │           ├── case-type-library.md
 │           ├── entry-points.md
+│           ├── quick-example.md
 │           ├── source-priority.yaml
+│           ├── troubleshooting.md
 │           └── verified-cases.md
 └── dist/
     └── a-share-corner-case-finder.zip

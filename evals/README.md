@@ -17,9 +17,15 @@
 - `pilot-2026-08-13.md`：同为GPT-5.6-sol时，基于今天微电生理任务链形成的六节点纵向Pilot。
 - `gold/microport-ep.md`：微电生理基准答案和一手证据锚点。
 - `gold/scope-evolution.md`：多轮口径变化下的动态重排基准答案。
+- `gold/clarification-policy.md`：偏好条件继续执行与阻塞歧义最少追问的基准答案。
+- `gold/cicc-semiconductor-latest.md`：新任务重置、最新性和“最好无实控人”偏好排序的基准答案。
+- `gold/ipo-fundraising-implementation-subjects.md`：多实施主体金额披露与境外研发共同实施主体的基准答案。
 - `results/retrospective-microport.md`：基于现有对话形成的单案例回溯基线及其结论边界。
+- `results/comparison-cicc-semiconductor.md`：两份真实回答在新中金半导体任务下的成对评分与 Skill 优势边界。
+- `results/comparison-ipo-implementation-subjects.md`：本次募投实施主体两份回答的成对评分及bad case复盘。
 - `interview-scorecard.md`：面试 Demo 观察表，可由面试官或同伴直接打分。
 - `validate_evals.py`：检查 JSONL 格式、ID 唯一性和必填字段。
+- `test_case_pipeline.py`：对内置下载/PDF校验/动态评级脚本做可重复的冒烟测试。
 
 ## 使用方法
 
@@ -56,6 +62,12 @@ Skill、模型或检索工具变更后，至少重跑：
 - `R005` 一手证据不足时的降级处理；
 - `R006` 终止项目不得错误归因。
 - `R009` 用户连续收紧口径后重新评级和排序。
+- `R010` 偏好条件应说明假设并继续，不得无效阻塞。
+- `R011` 会改变唯一严格结论的歧义只问一个关键问题。
+- `R012` 新检索任务必须重置口径，不得受上一案例硬条件污染。
+- `R013` 网络超时或PDF无文字层时，能否程序化重试、转OCR并正确降级证据。
+- `R014` 多实施主体项目能否正确区分“逐主体金额”和“只列项目总额”。
+- `R015` 能否区分新增共同实施、整体替换、复合项目，并按具体项目核对置换金额。
 
 ## 动态评级原则
 
